@@ -97,8 +97,11 @@ def KamarIsi():
 #FUNGSI MENCETAK KAMAR YANG TERSEDIA#
 def KamarKosong():
     isi = []
-    for i in range(len(DataPelanggan)):
-        isi.append(DataPelanggan[i]["Nomor Kamar"])
+    for i in range(len(DataPelanggan)+1):
+        if i in DataPelanggan.keys():
+            isi.append(DataPelanggan[i]["Nomor Kamar"])
+        else:
+            i+=1
     p,q =RoomData["Lantai"].values()
     global kosong1
     global kosong2
@@ -133,7 +136,12 @@ def HapusData(x):
 
 #FUNGSI MEMASUKKAN DATA PENGHUNI BARU#
 def DataBaru(x,y,z):
-    id = len(DataPelanggan)
+    for i in range(len(DataPelanggan)+1):
+        if i not in DataPelanggan.keys():
+            id = i
+            break
+        else:
+            i+=1
     lt1,lt2 = KamarKosong()
     if y == "Kamar Bronze":
         nk = rd.choice(lt1)
@@ -152,7 +160,7 @@ def pindah(j,k,l):
     IDPindah = cekID(j,"Nomor Kamar")
     dendaPindah = hitungdenda(IDPindah)
     sewaPindah = hitungsewa(k,l)
-    TBPindah = dendaPindah + sewaPindah
+    TBPindah = round((dendaPindah + sewaPindah),2)
     DataPelanggan[IDPindah]["Tipe Kamar"] = tipePindah
     lt1,lt2 = KamarKosong()
     if l == "Kamar Bronze":
@@ -181,10 +189,10 @@ def hitungdenda(x):
     dur = sisa(x)
     if dur > 0:
         if DataPelanggan[x]["Tipe Kamar"] == "Kamar Bronze":
-            denda = (dur)*(RoomData["Harga Kamar"][0]*0.05)
+            denda = round(((dur)*(RoomData["Harga Kamar"][0]*0.05)),2)
             print(f"Denda keterlambatan anda sebesar {denda}")
         elif DataPelanggan[x]["Tipe Kamar"] == "Kamar Gold":
-            denda = (dur)*(RoomData["Harga Kamar"][1]*0.05)
+            denda = round(((dur)*(RoomData["Harga Kamar"][1]*0.05)),2)
             print(f"Denda keterlambatan anda sebesar {denda}")
     elif dur<=0:
         denda = 0
@@ -200,28 +208,28 @@ def hitungsewa(x,y):
                 break
             elif x == 6 or x%12 !=0 and x%6==0:
                 sewa = (x*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][0]
-                sewa = sewa-diskon
+                diskon = round((sewa*RoomData["Diskon"][0]),2)
+                sewa = round((sewa-diskon),2)
                 print(f"\nSelamat, anda mendapatkan diskon sebesar {diskon}\n")
                 break
             elif x%12 == 0:
                 sewa = (x*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][1]
-                sewa = sewa - diskon
+                diskon = round((sewa*RoomData["Diskon"][1],2))
+                sewa = round((sewa-diskon),2)
                 print(f"\nSelamat, anda mendapatkan diskon sebesar {diskon}\n")
                 break
             elif x > 6 and x < 12:
                 z = x%6
                 sewa = (6*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][0]
-                sewa = sewa - diskon +(z*RoomData["Harga Kamar"][0])
+                diskon = round((sewa*RoomData["Diskon"][0]),2)
+                sewa = round((sewa - diskon +(z*RoomData["Harga Kamar"][0])),2)
                 print(f"\nSelamat, anda mendapatkan diskon sebesar {diskon}\n")
                 break
             elif x>12 and x%12!=0 and x%6!=0:
                 z = x%12
                 sewa = ((x/12)*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][1]
-                sewa = sewa - diskon +(z*RoomData["Harga Kamar"][0])
+                diskon = round((sewa*RoomData["Diskon"][1]),2)
+                sewa = round((sewa - diskon +(z*RoomData["Harga Kamar"][0])),2)
                 print(f"\nSelamat anda mendapatkan diskon sebesar {diskon}\n")
                 break
         elif y == "Kamar Gold":
@@ -230,28 +238,28 @@ def hitungsewa(x,y):
                 break
             elif x == 6 or x%12 !=0 and x%6==0:
                 sewa = (x*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][0]
-                sewa = sewa-diskon
+                diskon = round((sewa*RoomData["Diskon"][0]),2)
+                sewa = round((sewa-diskon),2)
                 print(f"\nSelamat, anda mendapatkan diskon sebesar {diskon}\n")
                 break
             elif x%12 == 0:
                 sewa = (x*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][1]
-                sewa = sewa - diskon
+                diskon = round((sewa*RoomData["Diskon"][1]),2)
+                sewa = round((sewa-diskon),2)
                 print(f"\nSelamat, anda mendapatkan diskon sebesar {diskon}\n")
                 break
             elif x > 6 and x < 12:
                 z = x%6
                 sewa = (6*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][0]
-                sewa = sewa - diskon +(z*RoomData["Harga Kamar"][0])
+                diskon = round((sewa*RoomData["Diskon"][0]),2)
+                sewa = round((sewa - diskon +(z*RoomData["Harga Kamar"][0])),2)
                 print(f"\nSelamat, anda mendapatkan diskon sebesar {diskon}\n")
                 break
             elif x>12 and x%12!=0 and x%6!=0:
                 z = x%12
                 sewa = ((x/12)*RoomData["Harga Kamar"][0])
-                diskon = sewa*RoomData["Diskon"][1]
-                sewa = sewa - diskon +(z*RoomData["Harga Kamar"][0])
+                diskon = round((sewa*RoomData["Diskon"][1]),2)
+                sewa = round((sewa - diskon +(z*RoomData["Harga Kamar"][0])),2)
                 print(f"\nSelamat anda mendapatkan diskon sebesar {diskon}\n")
                 break
     return sewa
@@ -431,12 +439,12 @@ while True:
                                 print("\n Anda akan dipindahkan ke tipe Kamar Bronze")
                             durPindah = int(input("Masukkan durasi sewa: "))
                             J = pindah(nomorPindah, durPindah, tipePindah)
+                            print(f"\nJumlah yang harus dibayar sebesar: {J}\n")
                             subMenuInput2 = input("Lanjutkan ke Pembayaran? (Y/N): ").upper()
                             if subMenuInput2 == "Y":    
                                 while True:
-                                    print(f"\nJumlah yang harus dibayar sebesar: {J}\n")
                                     UangBayar = int(input("Masukkan Jumlah Uang Anda :")) 
-                                    Kembalian = UangBayar - J
+                                    Kembalian = round((UangBayar - J),2)
                                     if Kembalian < 0:
                                         Kembalian = Kembalian * -1
                                         print(f"\nTransaksi anda BATAL, kekurangan uang sebesar {Kembalian}")
